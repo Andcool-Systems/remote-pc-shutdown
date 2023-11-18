@@ -67,8 +67,8 @@ while started:
 # Подписка на топик
 client.subscribe("target")
 
-# Цикл во втором потоке; Отправляем каждые 5 секунд текущее время для статуса онлайна в приложении
 def main_loop():
+    """Цикл во втором потоке; Отправляем каждые 5 секунд текущее время для статуса онлайна в приложении"""
     while True:
         now = datetime.now()
         now_time_format = "{}:{} {}.{}.{}".format(
@@ -81,12 +81,11 @@ def main_loop():
         client.publish("last_online", now_time_format)
         time.sleep(5)
 
-# Создание и запуск потока
-thread = threading.Thread(target=main_loop)
-thread.start()
+if __name__ == '__main__':
+    """Точка входа"""
+    # Создание и запуск потока
+    thread = threading.Thread(target=main_loop)
+    thread.start()
 
-# Основной цикл MQTT клиента
-client.loop_forever()
-
-
-
+    # Основной цикл MQTT клиента
+    client.loop_forever()
