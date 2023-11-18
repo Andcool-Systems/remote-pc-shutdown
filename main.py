@@ -13,14 +13,15 @@ broker_address = "broker.hivemq.com"  # mqtt брокер
 port = int(os.getenv("PORT"))  # порт для MQTT
 
 def on_connect(client, userdata, flags, rc):
+    """Callback-функция для обработки события подключения к брокеру"""
     if rc == 0:
         print("Connected")
     else:
         print(f"Couldn't connect: {rc}")
 
-# Callback-функция для обработки получения нового сообщения
+
 def on_message(client, userdata, msg):
-    print(f"Получено сообщение от топика {msg.topic}: {msg.payload.decode('utf-8')}")
+    """Callback-функция для обработки получения нового сообщения"""
     if msg.topic == "target":
         match int(msg.payload.decode('utf-8')):
             case 1: os.system("shutdown /s") # Выключение
@@ -28,7 +29,7 @@ def on_message(client, userdata, msg):
             case 3: os.system("shutdown /r") # Перезагрузка
 
 def on_disconnect(client, userdata, rc):
-    # Переподключение к брокеру при разрыве соединения    
+    """Переподключение к брокеру при разрыве соединения"""
     started = True
     while started:
         try:
