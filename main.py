@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 username = os.getenv("USERNAME")
 password = os.getenv("PASSWORD")
-broker_address = "broker.hivemq.com"  # mqtt брокер
+broker_address = os.getenv("BROKER")  # mqtt брокер
 port = int(os.getenv("PORT"))  # порт для MQTT
 
 def on_connect(client, userdata, flags, rc):
