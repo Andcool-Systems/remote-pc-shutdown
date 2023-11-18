@@ -1,4 +1,3 @@
-datetime
 paho-mqtt
 python-dotenv
 pyinstaller
