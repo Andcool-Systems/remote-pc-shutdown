@@ -3,12 +3,14 @@ import threading
 import time
 import os
 from datetime import datetime
+from dotenv import load_dotenv
 
-# Замените на ваши данные
-username = "username"
-password = "password"
+# Данные WebClient mqtt HiveMq
+load_dotenv()
+username = os.getenv("USERNAME")
+password = os.getenv("PASSWORD")
 broker_address = "broker.hivemq.com"  # mqtt брокер
-port = 1883  # порт для MQTT
+port = int(os.getenv("PORT"))  # порт для MQTT
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
