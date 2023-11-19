@@ -23,10 +23,13 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     """Callback-функция для обработки получения нового сообщения"""
     if msg.topic == "target":
+        client.publish("ping", "recieved") # Подтверждение принятия
+
         match int(msg.payload.decode('utf-8')):
             case 1: os.system("shutdown /s") # Выключение
             case 2: os.system("shutdown /h") # Сон
             case 3: os.system("shutdown /r") # Перезагрузка
+            case 4: os.system("Rundll32.exe user32.dll,LockWorkStation") # Блокировка
 
 def on_disconnect(client, userdata, rc):
     """Переподключение к брокеру при разрыве соединения"""
@@ -70,15 +73,8 @@ client.subscribe("target")
 def main_loop():
     """Цикл во втором потоке; Отправляем каждые 5 секунд текущее время для статуса онлайна в приложении"""
     while True:
-        now = datetime.now()
-        now_time_format = "{}:{} {}.{}.{}".format(
-            now.hour,
-            now.minute,
-            now.day,
-            now.month,
-            now.year,
-        )
-        client.publish("last_online", now_time_format)
+        client.subscribe("target")
+        client.publish("ping", 0)
         time.sleep(5)
 
 if __name__ == '__main__':
